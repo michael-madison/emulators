@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<HTML>
+	<HEAD>
+		<TITLE>OCI Emulation Tool for Bayer DE</TITLE>
+		<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+		<META content="MSHTML 5.50.4807.2300" name=GENERATOR>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script>
+			var attrs = ['SENDERID', 'SHAREDSECRET', 'USERNAME', 'PASSWORD', 'COMPANY_CODE', 'ACCOUNT_CODE', 'COST_CENTER', 'USER_ID', 'VENDOR', 'USER_GROUP'];
+			var settings = {
+				'novartis': {
+					'base': {
+						'SENDERID': 'NOVB2BUSER',
+						'SHAREDSECRET': 'SIGMA1ALDRICH',
+						'USERNAME': 'NO24210500GB',
+						'PASSWORD': 'r8J3bM92gC',
+						'VENDOR': 'NOVARTISGBSTORE'
+					}
+				},
+				'usshared': {
+					'base': {
+						'SENDERID': 'DPNTB2BSYSTEM',
+						'SHAREDSECRET': 'SIGMA1ALDRICH',
+						'USERNAME': 'DUPONTUSB2B',
+						'PASSWORD': 'g7fV2s41P',
+						'VENDOR': 'SIALSCIPLCUS',
+						'COMPANY_CODE': '2350',
+						'USER_GROUP': '23501077A9'
+					}
+				},
+				'bayer': {
+					'base': {
+						'SENDERID': 'WALLMEDIEN',
+						'SHAREDSECRET': '3tDS8n0PvK',
+						'USERNAME': 'BAYERDEOCI',
+						'PASSWORD': 'r8J3bM92gC',
+						'COMPANY_CODE': 'BSS',
+						'ACCOUNT_CODE': 'IDC',
+						'COST_CENTER': '15188'
+					}
+				}
+			};
+			$(document).ready(function() {
+				$('select#server').change(function(e) {
+					$('form').attr('action', 'https://' + $('#server').val() + '/ProcurementIntegration/SIALSapOciPunchOutSetupRequest');
+//					$('#HOOK_URL').val('http://' + $('#server').val() + '/erequest/showrequest');
+					$('#destination').html($('#server option:selected').text())
+				});
+				$('select#client').change(function(e) {
+					var name = $('select#client').val();
+					var localSettings = {};
+					$.extend(localSettings, settings[name]['base'], settings[name][$('#server option:selected').text()] || {});
+					for (i = 0; i < attrs.length; i++) {
+						$('#' + attrs[i]).val(localSettings[attrs[i]]);
+					}
+					$('#client_name').html($('#client option:selected').text())
+				});
+				$('select#server').val($('select#server option').first().val());
+				$('select#client').val($('select#client option').first().val());
+				$('select').change();
+				// $('form').attr('action', 'https://' + $('#server').val() + '/ProcurementIntegration/SIALSapOciPunchOutSetupRequest');
+			});
+		</script>
+		<style>
+			.row {
+				position: relative;
+				width: 100%;
+				margin-top: 5px;
+				margin-bottom: 5px;
+			}
+			.header {
+				position: relative;
+				width: 100%;
+				font-weight: bold;
+				text-decoration: underline;
+				text-align: center;
+			}
+			.container {
+				position: relative;
+				width: 500px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.left_label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 240px;
+				text-align: right;
+			}
+			.right_input {
+				position: relative;
+				margin-left: 250px;
+				top: 0;
+				right: 0;
+				text-align: left;
+			}
+			.separated {
+				margin-bottom: 10px;
+				margin-top: 10px;
+				border-bottom: 1px dotted gray;
+			}
+			body {
+				text-align: center;
+			}
+		</style>
+	</HEAD>
+	<BODY>
+		<form method="POST" name="myform" action="">
+			<div class="container">
+				<div class="header">
+					Sigma-Aldrich 3pp Environment PunchOut Tool (ie: SAP OCI)
+				</div>
+				<div class="row">
+					<div class="left_label">
+						Server:
+					</div>
+					<div class="right_input">
+						<select name="server" id="server">
+							<option value="wsc3ppws.sial.com">3PP</option>
+							<option value="wscsrchws.sial.com">Search</option>
+							<option value="wscdws.sial.com">Dev</option>
+							<option value="wscqaws.sial.com">QA</option>
+							<option value="wscprews.sial.com">Pre-Prod</option>
+							<option value="wscpws1.sial.com">Prod</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="left_label">
+						Client:
+					</div>
+					<div class="right_input">
+						<select name="client" id="client">
+							<option value="bayer">Bayer</option>
+							<option value="novartis">Novartis UK</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<INPUT type="hidden" id="SENDERID" maxLength="256" value="" name="SENDERID">
+			<INPUT type="hidden" id="SHAREDSECRET" maxLength="256" value="" name="SHAREDSECRET">
+			<INPUT type="hidden" id="USERNAME" maxLength="256" value="" name="USERNAME">
+			<INPUT type="hidden" id="PASSWORD" maxLength="256" value="" name="PASSWORD">
+			<INPUT type="hidden" id="COMPANY_CODE" maxLength="256" value="" name="COMPANY_CODE">
+			<INPUT type="hidden" id="ACCOUNT_CODE" maxLength="256" value="" name="ACCOUNT_CODE">
+			<INPUT type="hidden" id="COST_CENTER" maxLength="256" value="" name="COST_CENTER">
+			<INPUT type="hidden" id="PLANT" maxLength="256" value="" name="PLANT">
+			<INPUT type="hidden" id="USER_ID" maxLength="256" value="" name="USER_ID">
+			<INPUT type="hidden" id="USER_GROUP" maxLength="256" value="" name="USER_GROUP">
+			<INPUT type="hidden" id="VENDOR" maxLength="256" value="" name="VENDOR">
+
+			<div class="container separated">
+				<div class="row">
+					<div class="left_label">
+						FULLNAME
+					</div>
+					<div class="right_input">
+						<INPUT id="FULLNAME" maxLength="256" name="FULLNAME" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="left_label">
+						LASTNAME
+					</div>
+					<div class="right_input">
+						<INPUT id="LASTNAME" maxLength="256" name="LASTNAME" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="left_label">
+						FIRSTNAME
+					</div>
+					<div class="right_input">
+						<INPUT id="FIRSTNAME" maxLength="256" name="FIRSTNAME" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="left_label">
+						EMAIL
+					</div>
+					<div class="right_input">
+						<INPUT id="EMAIL" maxLength="256" name="EMAIL" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="left_label">
+						SAP-LANGUAGE
+					</div>
+					<div class="right_input">
+						<INPUT id="SAP-LANGUAGE" maxLength="256" value="E" name="SAP-LANGUAGE" />
+					</div>
+				</div>
+			</div>
+			<div class="container separated">
+				<div class="row">
+					<div class="left_label">
+						PLANT
+					</div>
+					<div class="right_input">
+						<INPUT id="PLANT" maxLength="256" name="PLANT">
+					</div>
+				</div>
+				<div class="row">
+					<div class="left_label">
+						FUNCTION
+					</div>
+					<div class="right_input">
+						<INPUT id="FUNCTION" maxLength="256" name="FUNCTION">
+					</div>
+				</div>
+				<div class="row">
+					<div class="left_label">
+						PRODUCTID
+					</div>
+					<div class="right_input">
+						<INPUT id="PRODUCTID" maxLength="256" name="PRODUCTID">
+					</div>
+				</div>
+				<div class="row">
+					<div class="left_label">
+						QUANTITY
+					</div>
+					<div class="right_input">
+						<INPUT id="QUANTITY" maxLength="256"  name="QUANTITY">
+					</div>
+				</div>
+				<INPUT type="hidden" id="HOOK_URL" maxLength="256" size="100" value="http://webqws.sial.com/erequest/showrequest" name="HOOK_URL">
+				<INPUT type="hidden" id="TARGET" maxLength="256" value="_top" name="~TARGET">
+				<INPUT type="hidden" id="caller" maxLength="256" value="CTLG" name="~caller">
+				<INPUT type="hidden" id="OkCode" maxLength="256" value="ADDI" name="~OkCode">
+				<div class="row">
+					<INPUT id="button3" type="submit" value="Submit" name="button3">
+				</div>
+				<div class="row">
+					to <span id="client_name">Bayer</span> Marketplace (<span id="destination">PreProd</span>)
+				</div>
+			</div>
+		</FORM>
+		<HR>
+	</body>
+</html>
